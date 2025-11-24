@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DevStudio | Official Site</title>
+  <meta name="description" content="DevStudio KR - 유튜브 & 방송 중심의 크루" />
+  <meta name="theme-color" content="#0f0f11" />
+
+  <style>
+    :root{
+      --primary:#a78bfa; --bg:#0f0f11; --bg-light:#151516; --card:#1b1b1d; --text:#e6e6e9; --muted:#9aa0a6; --glass: rgba(20,20,22,0.6);
+      --radius:12px; --transition:.25s;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;font-family: 'Pretendard', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+    html,body{height:100%;background:var(--bg);color:var(--text);}
+
+    /* Header */
+    header{position:fixed;left:0;top:0;width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--glass);backdrop-filter:blur(8px);z-index:1200;border-bottom:1px solid rgba(255,255,255,0.03)}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand h1{color:var(--primary);font-size:1.2rem;margin:0}
+    nav{display:flex;gap:14px;align-items:center}
+    nav a{color:var(--text);text-decoration:none;font-size:0.95rem;transition:color var(--transition)}
+    nav a:hover{color:var(--primary)}
+
+    /* Mobile */
+    .hamburger{display:none;width:40px;height:40px;border-radius:10px;border:none;background:transparent;color:var(--text);cursor:pointer}
+    .mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;background:linear-gradient(180deg,rgba(10,10,10,0.98),rgba(10,10,10,0.98));padding:14px;border-top:1px solid rgba(255,255,255,0.02)}
+    .mobile-menu a{display:block;padding:10px 6px}
+
+    /* Container sections */
+    main{padding-top:88px}
+    section{padding:64px 6%}
+    .hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px;min-height:60vh;justify-content:center}
+    .hero h2{font-size:2.6rem;color:var(--primary)}
+    .hero p{max-width:780px;color:var(--muted)}
+    .btn{display:inline-block;padding:10px 18px;border-radius:10px;border:1px solid var(--primary);color:var(--primary);text-decoration:none}
+    .btn:hover{background:var(--primary);color:#fff}
+
+    /* members */
+    .controls{display:flex;gap:12px;align-items:center;margin-bottom:18px}
+    .search{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 12px;border-radius:10px;color:var(--text)}
+    .filters{display:flex;gap:8px}
+    .filter-btn{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 10px;border-radius:10px;color:var(--muted);cursor:pointer}
+    .filter-btn.active{border-color:var(--primary);color:var(--primary)}
+
+    .members-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+    .member-card{background:var(--card);padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.02);text-align:center;transition:transform var(--transition),box-shadow var(--transition);cursor:pointer}
+    .member-card:hover{transform:translateY(-6px);box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+    .avatar{width:84px;height:84px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;background:linear-gradient(135deg,#44337a,#a78bfa);color:white;margin-bottom:12px}
+    .role{font-size:0.9rem;color:var(--muted);margin-bottom:6px}
+
+    /* video gallery */
+    .video-gallery{display:grid;grid-template-columns:1fr 320px;gap:18px}
+    .video-player{background:var(--card);border-radius:12px;padding:10px}
+    .thumbs{display:flex;flex-direction:column;gap:8px;max-height:420px;overflow:auto;padding-right:6px}
+    .thumb{display:flex;gap:8px;align-items:center;padding:8px;border-radius:8px;cursor:pointer;border:1px solid transparent}
+    .thumb:hover{background:rgba(255,255,255,0.02)}
+    .thumb.active{border-color:var(--primary)}
+
+    /* contact */
+    .contact-card{max-width:700px;margin:0 auto;background:var(--card);padding:20px;border-radius:12px}
+    .field{display:flex;flex-direction:column;margin-bottom:10px}
+    input[type=text],input[type=email],textarea{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)}
+    button[type=submit]{padding:10px 14px;border-radius:8px;border:none;background:var(--primary);color:#fff;cursor:pointer}
+
+    footer{padding:30px 6%;text-align:center;color:var(--muted);border-top:1px solid rgba(255,255,255,0.02);margin-top:40px}
+
+    /* small tweaks */
+    #scrollTop{position:fixed;right:22px;bottom:22px;background:var(--primary);width:44px;height:44px;border-radius:50%;border:none;color:#fff;display:none;cursor:pointer}
+
+    /* modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;padding:20px}
+    .modal{background:var(--card);padding:18px;border-radius:12px;max-width:760px;width:100%}
+
+    /* responsive */
+    @media(max-width:880px){
+      .video-gallery{grid-template-columns:1fr}
+      nav{display:none}
+      .hamburger{display:inline-flex}
+      .mobile-menu{display:none}
+      section{padding:40px 5%}
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <button id="hamburger" class="hamburger" aria-label="메뉴 열기">☰</button>
+      <h1>DevStudio</h1>
+    </div>
+    <nav aria-label="주요 네비게이션">
+      <a href="#home">홈</a>
+      <a href="#about">소개</a>
+      <a href="#members">멤버</a>
+      <a href="#content">콘텐츠</a>
+      <a href="#contact">문의</a>
+    </nav>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button id="themeToggle" class="filter-btn" title="테마 변경">테마변경</button>
+      <a class="btn" href="https://www.youtube.com/@DevStudioKR" target="_blank" rel="noopener">채널</a>
+    </div>
+  </header>
+
+  <div id="mobileMenu" class="mobile-menu" aria-hidden="true">
+    <a href="#home">홈</a>
+    <a href="#about">소개</a>
+    <a href="#members">멤버</a>
+    <a href="#content">콘텐츠</a>
+    <a href="#contact">문의</a>
+  </div>
+
+  <main>
+    <section id="home" class="hero" aria-labelledby="home-title">
+      <h2 id="home-title">DevStudio KR</h2>
+      <p>유튜브 & 치지직 방송 중심의 크루 DevStudio — 방송 기획, 촬영, 편집을 자체 제작합니다.</p>
+      <div style="display:flex;gap:10px"><a class="btn" href="#content">콘텐츠 보기</a><a class="btn" href="#members">멤버 보기</a></div>
+    </section>
+
+    <section id="about" aria-labelledby="about-title">
+      <h2 id="about-title">소개</h2>
+      <p style="color:var(--muted);margin-top:10px;max-width:900px">DevStudio는 유튜브와 치지직에서 방송 및 콘텐츠 제작을 중심으로 활동하는 팀입니다. 방송 기획 · 촬영 · 편집 · 썸네일까지 전 과정을 자체 제작합니다.</p>
+    </section>
+
+    <section id="members" aria-labelledby="members-title">
+      <h2 id="members-title">멤버 소개</h2>
+
+      <div class="controls" style="margin-top:12px">
+        <input id="memberSearch" class="search" placeholder="멤버 검색 (이름 또는 역할)" aria-label="멤버 검색" />
+        <div class="filters" role="tablist">
+          <button class="filter-btn active" data-filter="all">전체</button>
+          <button class="filter-btn" data-filter="lead">리더</button>
+          <button class="filter-btn" data-filter="engineer">엔지니어</button>
+          <button class="filter-btn" data-filter="editor">편집자</button>
+          <button class="filter-btn" data-filter="talent">출연진</button>
+        </div>
+      </div>
+
+      <div id="membersGrid" class="members-grid" aria-live="polite">
+        <!-- Member cards generated by JS -->
+      </div>
+    </section>
+
+    <section id="content" aria-labelledby="content-title">
+      <h2 id="content-title">콘텐츠 갤러리</h2>
+      <div class="video-gallery" style="margin-top:14px">
+        <div class="video-player" id="playerContainer">
+          <div style="position:relative;padding-top:56.25%">
+            <iframe id="mainPlayer" src="https://www.youtube.com/embed/DOZX2Tl-Fls" title="YouTube video player" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>
+          </div>
+        </div>
+        <div class="thumbs" id="thumbs">
+          <!-- thumbnails populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">문의</h2>
+      <div class="contact-card" style="margin-top:12px">
+        <form id="contactForm">
+          <div class="field"><label for="name">이름</label><input id="name" name="name" type="text" required></div>
+          <div class="field"><label for="email">이메일</label><input id="email" name="email" type="email" required></div>
+          <div class="field"><label for="message">내용</label><textarea id="message" name="message" rows="5" required></textarea></div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button type="submit">전송</button>
+            <button type="button" id="copyEmail" class="filter-btn">이메일 복사</button>
+            <a id="mailtoLink" href="mailto:dltnqls2000rmflrhsj@gmail.com" style="margin-left:auto;color:var(--muted);text-decoration:underline">직접 메일</a>
+          </div>
+          <p id="formMsg" style="color:var(--muted);margin-top:8px;font-size:0.95rem"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2024 ~ 2025 DevStudio KR. All Rights Reserved.</p>
+  </footer>
+
+  <button id="scrollTop" aria-label="맨 위로">↑</button>
+
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-hidden="true">
+    <div class="modal" id="memberModal">
+      <!-- modal content injected by JS -->
+    </div>
+  </div>
+
+  <script>
+    /************** Data (멤버, 비디오) **************/
+    const MEMBERS = [
+      {id:1,name:'설모',role:'lead',title:'크루장 / 엔지니어 / 총괄',bio:'크루 전반을 총괄하며 기술개발을 담당합니다. 전반적인 교육도 진행 중입니다.PP에 소유자 입니다.'},
+      {id:2,name:'토겜',role:'lead',title:'공동창립자 / 엔지니어 / 총괄',bio:'현장 운영 및 기술지원 및 스크립트 를 제작하기도 하고 전반적인 썸내일러/편집 기술을 교육중 입니다.PP에 소유자 입니다.'},
+      {id:3,name:'샤람',role:'talent',title:'출연진',bio:'출연과 콘텐츠 기획을 담당합니다.'},
+      {id:4,name:'수연',role:'hr',title:'인사과',bio:'멤버 관리와 운영을 담당합니다. 현재는 인사팀 팀장 입니다.'},
+      {id:5,name:'이시루',role:'pd',title:'PD',bio:'콘텐츠 연출 및 섭외 담당.PD'},
+      {id:6,name:'서연',role:'editor',title:'편집자',bio:'편집 및 후반작업 담당.'},
+      {id:7,name:'G몬스터',role:'talent',title:'출연진',bio:'다채로운 콘텐츠로 활약합니다.'},
+      {id:8,name:'단늅',role:'talent',title:'출연진',bio:'게임/편집자로 현재 일하고 있습니다.'},
+      {id:9,name:'라떼',role:'editor',title:'썸네일러,인사',bio:'썸네일 디자인 및 커뮤니케이션.업무를 하는 중입니다.'},
+      {id:10,name:'맥주',role:'editor',title:'썸네일러,감사',bio:'썸네일과 감사 업무 담당자 입니다. 현재는 쉬고 있습니다.'}
+    ];
+
+    const VIDEOS = [
+      {id:'DOZX2Tl-Fls',title:'최근 영상 1'},
+      {id:'k3l9sV7xZ2g',title:'하이라이트 클립'},
+      {id:'a1b2c3d4e5F',title:'인터뷰 스페셜'}
+    ];
+
+    /************** Utilities **************/
+    const el = q=>document.querySelector(q);
+    const elAll = q=>Array.from(document.querySelectorAll(q));
+
+    /************** Mobile menu **************/
+    const hamburger = el('#hamburger');
+    const mobileMenu = el('#mobileMenu');
+    hamburger.addEventListener('click',()=>{
+      const open = mobileMenu.getAttribute('aria-hidden') === 'true';
+      mobileMenu.style.display = open ? 'block' : 'none';
+      mobileMenu.setAttribute('aria-hidden', String(!open));
+    });
+
+    // Close mobile on link click
+    mobileMenu.addEventListener('click',(e)=>{ if(e.target.tagName==='A'){ mobileMenu.style.display='none'; mobileMenu.setAttribute('aria-hidden','true'); } });
+
+    /************** Theme toggle (prefers-color-scheme aware) **************/
+    const themeToggle = el('#themeToggle');
+    function setTheme(mode){
+      if(mode==='light'){ document.documentElement.style.setProperty('--bg','#f6f7fb'); document.documentElement.style.setProperty('--bg-light','#ffffff'); document.documentElement.style.setProperty('--card','#ffffff'); document.documentElement.style.setProperty('--text','#0f1724'); document.documentElement.style.setProperty('--muted','#475569'); }
+      else { document.documentElement.style.removeProperty('--bg'); document.documentElement.style.removeProperty('--bg-light'); document.documentElement.style.removeProperty('--card'); document.documentElement.style.removeProperty('--text'); document.documentElement.style.removeProperty('--muted'); }
+      localStorage.setItem('devstudio-theme',mode);
+    }
+    const savedTheme = localStorage.getItem('devstudio-theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    if(savedTheme==='light') setTheme('light');
+    themeToggle.addEventListener('click',()=> setTheme(localStorage.getItem('devstudio-theme')==='light' ? 'dark' : 'light'));
+
+    /************** Render members **************/
+    const membersGrid = el('#membersGrid');
+    function renderMembers(list){
+      membersGrid.innerHTML='';
+      list.forEach(m=>{
+        const card = document.createElement('div'); card.className='member-card'; card.tabIndex=0; card.setAttribute('data-role',m.role);
+
+        const avatar = document.createElement('div'); avatar.className='avatar'; avatar.textContent = m.name[0];
+        const name = document.createElement('div'); name.style.fontWeight='700'; name.style.marginBottom='6px'; name.textContent = m.name;
+        const role = document.createElement('div'); role.className='role'; role.textContent = m.title;
+        card.appendChild(avatar); card.appendChild(name); card.appendChild(role);
+
+        card.addEventListener('click',()=>openMemberModal(m));
+        card.addEventListener('keydown',(e)=>{ if(e.key==='Enter') openMemberModal(m); });
+        membersGrid.appendChild(card);
+      });
+    }
+    renderMembers(MEMBERS);
+
+    // filter buttons
+    elAll('.filter-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        elAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const f=btn.dataset.filter;
+        let filtered = MEMBERS;
+        if(f!=='all') filtered = MEMBERS.filter(m=>m.role===f);
+        const q = el('#memberSearch').value.trim().toLowerCase();
+        if(q) filtered = filtered.filter(m=> (m.name+m.title+m.bio).toLowerCase().includes(q));
+        renderMembers(filtered);
+      });
+    });
+
+    // search
+    el('#memberSearch').addEventListener('input', (e)=>{
+      const q = e.target.value.trim().toLowerCase();
+      const activeFilter = el('.filter-btn.active')?.dataset.filter || 'all';
+      let filtered = MEMBERS;
+      if(activeFilter!=='all') filtered=filtered.filter(m=>m.role===activeFilter);
+      if(q) filtered = filtered.filter(m=> (m.name+m.title+m.bio).toLowerCase().includes(q));
+      renderMembers(filtered);
+    });
+
+    /************** Modal **************/
+    const modalBackdrop = el('#modalBackdrop');
+    function openMemberModal(member){
+      const html = `
+        <div style="display:flex;gap:14px;align-items:flex-start">
+          <div style="width:96px;height:96px;border-radius:16px;background:linear-gradient(135deg,#44337a,#a78bfa);display:flex;align-items:center;justify-content:center;color:white;font-size:34px">${member.name[0]}</div>
+          <div style="flex:1">
+            <h3 style="margin:0 0 6px">${member.name} <span style="color:var(--muted);font-size:0.9rem">${member.title}</span></h3>
+            <p style="color:var(--muted);margin-top:8px">${member.bio}</p>
+            <div style="margin-top:12px"><button id="closeModal" class="filter-btn">닫기</button></div>
+          </div>
+        </div>
+      `;
+      el('#memberModal').innerHTML = html;
+      modalBackdrop.style.display='flex'; modalBackdrop.setAttribute('aria-hidden','false');
+      el('#closeModal').addEventListener('click',closeModal);
+    }
+    function closeModal(){ modalBackdrop.style.display='none'; modalBackdrop.setAttribute('aria-hidden','true'); }
+    modalBackdrop.addEventListener('click',(e)=>{ if(e.target===modalBackdrop) closeModal(); });
+
+    /************** Video gallery **************/
+    const thumbs = el('#thumbs');
+    const mainPlayer = el('#mainPlayer');
+    function renderThumbs(){
+      thumbs.innerHTML='';
+      VIDEOS.forEach((v,idx)=>{
+        const t = document.createElement('div'); t.className='thumb'; t.tabIndex=0; t.dataset.video=v.id;
+        if(idx===0) t.classList.add('active');
+        t.innerHTML = `<div style="width:120px;height:68px;border-radius:8px;background:#000;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px">썸네일</div><div style="font-size:0.95rem;color:var(--muted)">${v.title}</div>`;
+        t.addEventListener('click',()=>{ loadVideo(v.id); elAll('.thumb').forEach(x=>x.classList.remove('active')); t.classList.add('active'); })
+        t.addEventListener('keydown',(e)=>{ if(e.key==='Enter'){ t.click(); } });
+        thumbs.appendChild(t);
+      });
+    }
+    function loadVideo(id){ mainPlayer.src = `https://www.youtube.com/embed/${id}`; }
+    renderThumbs();
+
+    /************** Contact form (client-only) **************/
+    const contactForm = el('#contactForm');
+    const formMsg = el('#formMsg');
+    contactForm.addEventListener('submit',(e)=>{
+      e.preventDefault();
+      const name = el('#name').value.trim();
+      const email = el('#email').value.trim();
+      const message = el('#message').value.trim();
+      if(!name||!email||!message){ formMsg.textContent='모든 필드를 채워주세요.'; return; }
+      // simple mailto fallback — the user can integrate real backend later
+      const subject = encodeURIComponent(`[사이트 문의] ${name}`);
+      const body = encodeURIComponent(`이름: ${name}\n이메일: ${email}\n\n${message}`);
+      window.location.href = `mailto:dltnqls2000rmflrhsj@gmail.com?subject=${subject}&body=${body}`;
+      formMsg.textContent='메일 앱이 열리지 않으면 위의 직접 메일 버튼을 이용하세요.';
+    });
+
+    // copy email
+    el('#copyEmail').addEventListener('click',async ()=>{
+      try{ await navigator.clipboard.writeText('dltnqls2000rmflrhsj@gmail.com'); el('#formMsg').textContent='이메일이 복사되었습니다.' }catch(e){ el('#formMsg').textContent='복사에 실패했습니다. 직접 메일을 눌러주세요.' }
+    });
+
+    /************** header on scroll & scrollTop **************/
+    const header = document.querySelector('header');
+    const scrollTop = el('#scrollTop');
+    window.addEventListener('scroll',()=>{
+      if(window.scrollY>50) header.style.backdropFilter='blur(12px)'; else header.style.backdropFilter='blur(6px)';
+      scrollTop.style.display = window.scrollY>400 ? 'block' : 'none';
+    });
+    scrollTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+    /************** intersection reveal (simple) **************/
+    const io = new IntersectionObserver(entries=>{ entries.forEach(en=>{ if(en.isIntersecting) en.target.style.opacity=1; }); },{threshold:0.2});
+    document.querySelectorAll('section').forEach(s=>{ s.style.opacity=0; io.observe(s); });
+
+    /************** accessibility small improvements **************/
+    document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closeModal(); });
+
+  </script>
+</body>
+</html>
